@@ -6,17 +6,21 @@ export default function Licencas() {
 
             <form className="w-full max-w-4xl bg-white p-6 shadow-md rounded-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-700">
 
-                {/* Primeira linha - Empresa e Número */}
                 <div className="mb-4 sm:col-span-2 lg:col-span-1">
                     <label htmlFor="empresa" className="block text-sm font-medium">Empresa</label>
-                    <input
-                        type="text"
+                    <select
                         id="empresa"
                         name="empresa"
                         className="mt-2 p-2 w-full border border-gray-300 rounded-md"
                         required
-                    />
+                    >
+                        <option value="">Selecione uma empresa</option>
+                        <option value="empresa1">Empresa 1</option>
+                        <option value="empresa2">Empresa 2</option>
+                        <option value="empresa3">Empresa 3</option>
+                    </select>
                 </div>
+
 
                 <div className="mb-4 sm:col-span-2 lg:col-span-1.5">
                     <label htmlFor="numero" className="block text-sm font-medium">Número</label>

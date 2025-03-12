@@ -1,0 +1,33 @@
+// schema.prisma
+// schema.prisma
+
+datasource db {
+  provider = "mysql" // ou "postgresql", dependendo do seu banco de dados
+  url      = env("DATABASE_URL") // Variável de ambiente para a URL do banco de dados
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Empresa {
+  id          Int       @id @default(autoincrement())
+  razaoSocial String
+  cnpj        String
+  cep         String
+  cidade      String
+  estado      String
+  bairro      String
+  complemento String
+  licencas    Licenca[]
+}
+
+model Licenca {
+  id            Int       @id @default(autoincrement())
+  numero        String
+  orgaoAmbiental String
+  emissao       DateTime
+  validade      DateTime
+  empresaId     Int
+  empresa       Empresa   @relation(fields: [empresaId], references: [id])
+}

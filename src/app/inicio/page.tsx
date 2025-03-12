@@ -11,7 +11,7 @@ export default function Inicio() {
                     ao Sistema de Cadastro de Empresas
                 </h2>
                 <h3 className="text-3xl font-medium text-green-600 mb-6">
-                    e Licenças Ambientais
+                    e Licenças   Ambientais
                 </h3>
                 <div className="space-x-4">
                     <button className="px-6 py-2 bg-green-600 text-white rounded-md shadow-md hover:bg-green-700 transition">
