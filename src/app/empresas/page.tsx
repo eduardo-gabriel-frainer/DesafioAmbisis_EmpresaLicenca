@@ -2,11 +2,11 @@
 
 export default function Empresas() {
     return (
-        <div className="flex flex-col items-center  min-h-screen bg-gray-100 p-6">
+        <div className="flex flex-col items-center min-h-screen bg-gray-100 p-20">
             <br />
-            <h1 className="text-4xl font-bold text-gray-800 mb-6">Cadastro de Empresa</h1>
+            <h1 className="text-4xl font-bold text-gray-800 mb-6">Cadastro de Empresas</h1>
 
-            <form className="w-full max-w-4xl bg-white p-6 shadow-md rounded-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-700">
+            <form className="w-full max-w-4xl bg-white p-6 shadow-lg rounded-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-700">
                 <div className="mb-4 ">
                     <label htmlFor="razaoSocial" className="block text-sm font-medium">Razão Social</label>
                     <input
@@ -73,7 +73,7 @@ export default function Empresas() {
                     />
                 </div>
 
-                <div className="mb-4 col-span-2 sm:col-span-1">
+                <div className="mb-4 sm:col-span-3">
                     <label htmlFor="complemento" className="block text-sm font-medium">Complemento</label>
                     <input
                         type="text"
@@ -83,7 +83,7 @@ export default function Empresas() {
                     />
                 </div>
 
-                <button type="submit" className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-blue-700 transition w-full sm:col-span-2 lg:col-span-3">
+                <button type="submit" className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition w-full sm:col-span-2 lg:col-span-3">
                     Cadastrar
                 </button>
             </form>

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Inicio() {
     return (
         <div className="flex flex-col items-center min-h-screen bg-gray-100 p-30">
@@ -19,20 +21,25 @@ export default function Inicio() {
 
             <div className="flex flex-wrap justify-center gap-6">
 
-                <div className="bg-white p-6 rounded-lg shadow-md w-72 hover:shadow-xl transition transform hover:scale-105">
+                <div className="bg-white p-6 rounded-lg shadow-md w-72 hover:shadow-xl transition transform hover:scale-105 relative">
                     <h3 className="text-xl font-semibold text-green-600 mb-4">Cadastro de Empresas</h3>
                     <p className="text-gray-600 mb-4">Cadastre novas empresas e gerencie as informações necessárias para o seu cadastro ambiental.</p>
-                    <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
-                        Iniciar
-                    </button>
+                    <Link href={"/"}>
+                        <button className="mt-1 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                            Iniciar
+                        </button>
+                    </Link>
                 </div>
 
                 <div className="bg-white p-6 rounded-lg shadow-md w-72 hover:shadow-xl transition transform hover:scale-105">
                     <h3 className="text-xl font-semibold text-green-600 mb-4">Cadastro de Licenças</h3>
                     <p className="text-gray-600 mb-4">Gerencie as licenças ambientais com facilidade e acompanhe o status de cada uma delas.</p>
-                    <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
-                        Iniciar
-                    </button>
+                    <Link href={"/"}>
+                        <button className="absolute bottom-5 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                            Iniciar
+                        </button>
+                    </Link>
+
                 </div>
             </div>
         </div>

@@ -24,11 +24,11 @@ export default function Header() {
                     </Link>
                 </nav>
 
-                <button className="bg-white text-green-600 px-4 py-2 rounded-md hover:bg-gray-100">
-                    <Link href="/inicio">
+                <Link href="/inicio">
+                    <button className="bg-white text-green-600 px-4 py-2 rounded-md hover:bg-gray-100">
                         Início
-                    </Link>
-                </button>
+                    </button>
+                </Link>
             </div>
         </header>
     )

@@ -1,7 +1,7 @@
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-6">
+    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-20">
       <h1 className="text-4xl font-bold text-gray-800 mb-6">Lista de Empresas</h1>
 
       <button className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition mb-6">
