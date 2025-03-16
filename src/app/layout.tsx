@@ -1,3 +1,4 @@
+import Footer from '../components/footer';
 import Header from '../components/header'
 import "./globals.css";
 
@@ -12,9 +13,18 @@ export default function RootLayout({
       <body
         className={`antialiased`}
       >
-        <Header></Header>
+
+        <div className="header">
+          <Header />
+        </div>
 
         {children}
+
+        <footer className="footer">
+          <Footer />
+        </footer>
+
+
       </body>
     </html>
   );
