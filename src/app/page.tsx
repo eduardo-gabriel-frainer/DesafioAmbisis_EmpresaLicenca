@@ -15,7 +15,7 @@ export default function Inicio() {
         </h3>
         <div className="space-x-4">
           <button className="px-6 py-2 bg-green-600 text-white rounded-md shadow-md hover:bg-green-700 transition">
-            <Link href="/" className="hover:text-gray-200">
+            <Link href="/listarEmpresas" className="hover:text-gray-200">
               Começar Agora
             </Link>
           </button>

@@ -1,12 +1,7 @@
-
-
-"use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // Importação para navegação
-import { FaEdit, FaTrash, FaFileAlt } from "react-icons/fa"; // Importa os ícones
+import EmpresaActions from "./EmpresaActions"; // Importa o novo componente
+import { FaEdit } from "react-icons/fa";
 
-// Definição do Objeto/Tipo Empresa
 type Empresa = {
     id: number;
     razaoSocial: string;
@@ -18,61 +13,29 @@ type Empresa = {
     complemento: string;
 };
 
-export default function Home() {
-
-    const router = useRouter(); // Instância do router
-
-    const [empresas, setEmpresas] = useState<Empresa[]>([]); // Tipando o useState
-
-    // Função para buscar os dados da API
-    const fetchEmpresas = async () => {
-        try {
-            const response = await fetch("/api/crudEmpresa");
-            if (!response.ok) {
-                throw new Error("Erro ao buscar empresas");
-            }
-            const data: Empresa[] = await response.json();
-            setEmpresas(data); // Atualiza o estado com os dados do banco
-        } catch (error) {
-            console.error("Erro:", error);
-        }
-    };
-
-    // Chama a API quando o componente é montado
-    useEffect(() => {
-        fetchEmpresas();
-    }, []);
-
-    // Deletar Empresa, chama a função enviando o id como parametro
-    async function deletarEmpresa(id: number) {
-
-        const response = await fetch('/api/crudEmpresa', {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id }), // Envia o id para o  BackEnd
-        });
-
-        // Recarrega a página após exclusão
-        window.location.reload();
-
-        if (response.ok) {
-            alert('Empresa deletada com sucesso!!!')
-        }
-
+async function getEmpresas(): Promise<Empresa[]> {
+    const response = await fetch("http://localhost:3000/api/crudEmpresa", { cache: "no-store" });
+    if (!response.ok) {
+        throw new Error("Erro ao buscar empresas");
     }
+    return response.json();
+}
+
+export default async function EmpresasPage() {
+    const empresas = await getEmpresas(); // Buscando empresas no servidor
 
     return (
         <div className="flex flex-col items-center min-h-screen bg-gray-100 p-20">
             <h1 className="text-4xl font-bold text-gray-800 mb-6 mt-6">Lista de Empresas</h1>
 
-            <Link href={"/cadastroEmpresas"}>
+            <Link href="/cadastroEmpresas">
                 <button className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition mb-6">
                     + Nova Empresa
                 </button>
             </Link>
 
-            <div className="w-full max-w-4xl overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-700">
+            <div className="w-full max-w-5xl overflow-x-auto">
+                <table className="min-w-full bg-white border border-gray-700 table-fixed">
                     <thead>
                         <tr className="text-left bg-gray-200">
                             <th className="px-4 py-3 text-sm font-semibold text-gray-700">Razão Social</th>
@@ -88,7 +51,7 @@ export default function Home() {
 
                     <tbody>
                         {empresas.length > 0 ? (
-                            empresas.map((empresa) => (
+                            empresas.map((empresa: Empresa) => (
                                 <tr key={empresa.id} className="border-t text-black">
                                     <td className="px-4 py-2 border-r">{empresa.razaoSocial}</td>
                                     <td className="px-4 py-2 border-r">{empresa.cnpj}</td>
@@ -98,30 +61,21 @@ export default function Home() {
                                     <td className="px-4 py-2 border-r">{empresa.bairro}</td>
                                     <td className="px-4 py-2 border-r">{empresa.complemento}</td>
                                     <td className="px-4 py-2 border-r">
+                                        <div className="flex space-x-4 justify-start">
+                                            <Link href={`/cadastroEmpresas?id=${empresa.id}`}>
+                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
+                                                    <FaEdit size={23} />
+                                                </button>
+                                            </Link>
 
-                                        <div className="flex space-x-2 justify-center">
-                                            <button
-                                                onClick={() => router.push(`/cadastroEmpresas?id=${empresa.id}`)}
-                                                className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
-                                            >
-                                                <FaEdit size={18} />
-                                            </button>
+                                            <EmpresaActions empresaId={empresa.id} />
 
-                                            <button
-                                                onClick={() => deletarEmpresa(empresa.id)}
-                                                className="p-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                                            >
-                                                <FaTrash size={18} />
-                                            </button>
-
-                                            <button
-                                                onClick={() => router.push(`/gerirLicencas?empresaId=${empresa.id}`)}
-                                                className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
-                                            >
-                                                Licenças
-                                            </button>
+                                            <Link href={`/gerirLicencas/${empresa.id}`}>
+                                                <button className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-blue-600 transition">
+                                                    Licencas
+                                                </button>
+                                            </Link>
                                         </div>
-
                                     </td>
                                 </tr>
                             ))
@@ -133,10 +87,9 @@ export default function Home() {
                             </tr>
                         )}
                     </tbody>
-
                 </table>
             </div>
         </div>
     );
-}
 
+}

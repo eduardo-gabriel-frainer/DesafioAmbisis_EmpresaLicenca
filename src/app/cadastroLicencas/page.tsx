@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 interface Empresa {
@@ -7,15 +8,66 @@ interface Empresa {
     razaoSocial: string;
 }
 
+interface Licenca {
+    id?: number;
+    numero: string;
+    orgaoAmbiental: string;
+    emissao: string;
+    validade: string;
+    empresaId: string;
+}
+
 export default function Licencas() {
+    const searchParams = useSearchParams();
     const [empresas, setEmpresas] = useState<Empresa[]>([]);
-    const [formData, setFormData] = useState({
+    const id = searchParams.get('id');
+    const [formData, setFormData] = useState<Licenca>({
         numero: '',
         orgaoAmbiental: '',
         emissao: '',
         validade: '',
         empresaId: '',  // Use "empresaId" para armazenar o ID da empresa selecionada
     });
+
+    const [loading, setLoading] = useState(!!id);
+
+    useEffect(() => {
+        if (id) {
+            console.log('ID recebido na URL:', id);
+            fetch(`/api/crudLicenca?id=${id}`)
+                .then(async (res) => {
+                    if (!res.ok) {
+                        throw new Error(`Erro na resposta da API: ${res.status}`);
+                    }
+                    const data = await res.json();
+                    console.log('Dados recebidos:', data);
+
+                    // Se a API retorna um array, busque o primeiro item
+                    const licenca = Array.isArray(data) ? data.find((item) => item.id === parseInt(id)) : data;
+
+                    if (licenca) {
+                        setFormData({
+                            id: licenca.id,
+                            numero: licenca.numero,
+                            orgaoAmbiental: licenca.orgaoAmbiental,
+                            emissao: licenca.emissao,
+                            validade: licenca.validade,
+                            empresaId: String(licenca.empresaId), // Convertendo para string se necessário
+                        });
+                    } else {
+                        throw new Error('Licença não encontrada.');
+                    }
+
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error('Erro ao carregar os dados:', error.message);
+                    setLoading(false);
+                });
+        }
+    }, [id]);
+
+
 
     // Feito para pegar os nomes das empresas e mostrar no select
     useEffect(() => {
@@ -37,18 +89,21 @@ export default function Licencas() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Enviar dados para a API de forma simples
-        const response = await fetch('/api/crudLicenca', { // Mudando para a URL correta
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData), // Passa os dados diretamente
+        // Certifica que `empresaId` será enviada como um número
+        const payload = {
+            ...formData,
+            empresaId: parseInt(formData.empresaId, 10),
+        };
+
+        const response = await fetch('/api/crudLicenca', {
+            method: id ? 'PUT' : 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
         });
 
         if (response.ok) {
-            alert('Licença criada com sucesso!');
-            setFormData({ // Limpa os campos após sucesso
+            alert(id ? 'Licença atualizada com sucesso!' : 'Licença criada com sucesso!');
+            setFormData({
                 numero: '',
                 orgaoAmbiental: '',
                 emissao: '',
@@ -56,17 +111,16 @@ export default function Licencas() {
                 empresaId: '',
             });
         } else {
-            alert('Erro ao criar licença.');
+            alert('Erro ao salvar licença.');
         }
     };
 
     return (
         <div className="flex flex-col items-center min-h-screen bg-gray-100 p-20">
             <br />
-            <h1 className="text-4xl font-bold text-gray-800 mb-6">Cadastro de Licenças</h1>
+            <h1 className="text-4xl font-bold text-gray-800 mb-6">{id ? 'Editar Licença' : 'Cadastro de Licenças'}</h1>
 
             <form onSubmit={handleSubmit} className="w-full max-w-4xl bg-white p-6 shadow-md rounded-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-700">
-
                 <div className="mb-4 sm:col-span-2 lg:col-span-1">
                     <label htmlFor="empresa" className="block text-sm font-medium">Empresa</label>
                     <select
@@ -139,7 +193,7 @@ export default function Licencas() {
                 </div>
 
                 <button type="submit" className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition w-full sm:col-span-2 lg:col-span-3">
-                    Cadastrar
+                    {id ? 'Atualizar' : 'Cadastrar'}
                 </button>
             </form>
         </div>

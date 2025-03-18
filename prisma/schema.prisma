@@ -26,8 +26,8 @@ model Licenca {
   id            Int       @id @default(autoincrement())
   numero        String
   orgaoAmbiental String
-  emissao       DateTime
-  validade      DateTime
+  emissao       String
+  validade      String
   empresaId     Int
   empresa       Empresa   @relation(fields: [empresaId], references: [id])
 }

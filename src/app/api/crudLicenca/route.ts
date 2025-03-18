@@ -1,3 +1,4 @@
+'use-client'
 // prisma é o manipulador de dados
 import { PrismaClient } from '@prisma/client';
 // Cria respostas HTTP dentro do Next
@@ -6,49 +7,108 @@ import { NextResponse } from 'next/server';
 const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
-    // Desestrutura os dados recebidos no corpo da requisição
-    const { numero, orgaoAmbiental, emissao, validade, empresaId } = await request.json();
+    try {
+        const { numero, orgaoAmbiental, emissao, validade, empresaId } = await request.json();
 
-    // Converte as datas para o formato ISO 8601, caso necessário
-    const emisaoDate = new Date(emissao); // converte a string para um objeto Date
-    const validadeDate = new Date(validade);
+        // Certifique-se de que empresaId é um número válido
+        const empresaIdInt = parseInt(empresaId, 10);
+        if (isNaN(empresaIdInt)) {
+            return NextResponse.json({ error: "empresaId inválido" }, { status: 400 });
+        }
 
-    // Converte o empresaId para número (Int)
-    const empresaIdInt = parseInt(empresaId, 10);
+        // Criar nova licença no banco de dados
+        const newLicenca = await prisma.licenca.create({
+            data: {
+                numero,
+                orgaoAmbiental,
+                emissao, // Agora armazenado como string
+                validade, // Agora armazenado como string
+                empresaId: empresaIdInt,
+            },
+        });
 
-    // Criação de uma nova licença no banco de dados
-    const newLicenca = await prisma.licenca.create({
-        data: {
-            numero,
-            orgaoAmbiental,
-            emissao: emisaoDate.toISOString(), // converte para formato ISO 8601
-            validade: validadeDate.toISOString(),
-            empresaId: empresaIdInt,
-        },
-    });
-
-    // Retorna a nova licença criada
-    return NextResponse.json(newLicenca, { status: 201 });
+        return NextResponse.json(newLicenca, { status: 201 });
+    } catch (error) {
+        console.error("Erro ao criar licença:", error);
+        return NextResponse.json({ error: "Erro interno no servidor" }, { status: 500 });
+    }
 }
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const empresaId = searchParams.get('empresaId');
-
-    if (!empresaId) {
-        return NextResponse.json({ error: "empresaId é necessário" }, { status: 400 });
-    }
+    const licencaId = searchParams.get('id');
 
     try {
-        const licencas = await prisma.licenca.findMany({
-            where: {
-                empresaId: parseInt(empresaId, 10), // Filtra as licenças pelo ID da empresa
-            },
+        if (licencaId) {
+            // Busca por uma licença específica
+            const licenca = await prisma.licenca.findUnique({
+                where: { id: Number(licencaId) },
+            });
+
+            if (!licenca) {
+                return NextResponse.json({ error: "Licença não encontrada" }, { status: 404 });
+            }
+
+            return NextResponse.json(licenca, { status: 200 });
+        }
+
+        if (empresaId) {
+            // Busca todas as licenças de uma empresa específica
+            const empresa = await prisma.empresa.findUnique({
+                where: { id: Number(empresaId) },
+                include: { licencas: true },
+            });
+
+            if (!empresa) {
+                return NextResponse.json({ error: "Empresa não encontrada" }, { status: 404 });
+            }
+
+            return NextResponse.json(empresa, { status: 200 });
+        }
+
+        return NextResponse.json({ error: "Parâmetro 'id' ou 'empresaId' é necessário" }, { status: 400 });
+
+    } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+        return NextResponse.json({ error: "Erro ao buscar dados" }, { status: 500 });
+    }
+}
+
+
+// Método para Deletar as Empresas
+export async function DELETE(request: Request) {
+    try {
+        const body = await request.json();
+        const { id } = body;
+
+        await prisma.licenca.delete({
+            where: { id: Number(id) },
         });
 
-        return NextResponse.json(licencas, { status: 200 });
+        await prisma.licenca.findMany();
+
+        return NextResponse.json({ message: "Deletado com sucesso" }, { status: 201 });
     } catch (error) {
-        console.error("Erro ao buscar licenças:", error);
-        return NextResponse.json({ error: "Erro ao buscar licenças" }, { status: 500 });
+        console.error("Erro ao deletar licenca:", error);
+        return NextResponse.json({ error: "Erro interno ao deletar" }, { status: 500 });
     }
+
+}
+
+// Método para Atualizar a Licenca
+export async function PUT(request: Request) {
+    const { id, numero, orgaoAmbiental, emissao, validade } = await request.json();
+
+    const licencaAtualizada = await prisma.licenca.update({
+        where: { id: Number(id) },
+        data: {
+            numero,
+            orgaoAmbiental,
+            emissao,
+            validade,
+        },
+    });
+
+    return NextResponse.json(licencaAtualizada);
 }
