@@ -1,16 +1,15 @@
 'use-client'
-// prisma é o manipulador de dados
-import { PrismaClient } from '@prisma/client';
-// Cria respostas HTTP dentro do Next
-import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client'; // manipulador de dados
+import { NextResponse } from 'next/server'; // Cria respostas HTTP dentro do Next
 
 const prisma = new PrismaClient();
 
+// Método para Criar uma nova Licença
 export async function POST(request: Request) {
     try {
         const { numero, orgaoAmbiental, emissao, validade, empresaId } = await request.json();
+        // Desestrutura a requisição json e atribui os valores as variaveis TS.
 
-        // Certifique-se de que empresaId é um número válido
         const empresaIdInt = parseInt(empresaId, 10);
         if (isNaN(empresaIdInt)) {
             return NextResponse.json({ error: "empresaId inválido" }, { status: 400 });
@@ -21,8 +20,8 @@ export async function POST(request: Request) {
             data: {
                 numero,
                 orgaoAmbiental,
-                emissao, // Agora armazenado como string
-                validade, // Agora armazenado como string
+                emissao,
+                validade,
                 empresaId: empresaIdInt,
             },
         });
@@ -33,6 +32,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Erro interno no servidor" }, { status: 500 });
     }
 }
+
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);

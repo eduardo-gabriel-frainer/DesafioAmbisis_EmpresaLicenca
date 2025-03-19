@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 interface Empresa {
@@ -19,7 +20,9 @@ interface Licenca {
 
 export default function Licencas() {
     const searchParams = useSearchParams();
+    const router = useRouter();
     const [empresas, setEmpresas] = useState<Empresa[]>([]);
+    const empresaId = searchParams.get("empresaId");
     const id = searchParams.get('id');
     const [formData, setFormData] = useState<Licenca>({
         numero: '',
@@ -67,17 +70,25 @@ export default function Licencas() {
         }
     }, [id]);
 
-
-
-    // Feito para pegar os nomes das empresas e mostrar no select
     useEffect(() => {
-        fetch("api/crudEmpresa")
+        fetch("/api/crudEmpresa")
             .then((response) => response.json())
             .then((data) => {
                 setEmpresas(data);
+
+                // Se houver um empresaId na URL, pré-seleciona essa empresa no select
+                if (empresaId) {
+                    const empresaSelecionada = data.find((empresa: Empresa) => empresa.id === parseInt(empresaId, 10));
+                    if (empresaSelecionada) {
+                        setFormData((prev) => ({
+                            ...prev,
+                            empresaId: String(empresaSelecionada.id), // Garante que seja string para o select
+                        }));
+                    }
+                }
             })
             .catch((error) => console.error("Erro ao buscar empresas:", error));
-    }, []);
+    }, [empresaId]); // Recarrega quando o ID da empresa mudar na URL
 
     // Função para lidar com a mudança nos campos do formulário
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -113,6 +124,9 @@ export default function Licencas() {
         } else {
             alert('Erro ao salvar licença.');
         }
+
+        // Redireciona para a listagem
+        router.push(`/gerirLicencas/${formData.empresaId}`);
     };
 
     return (

@@ -77,12 +77,12 @@ export async function PUT(request: Request) {
 }
 
 // Método para Listar uma empresa
-export async function GETONE(request: Request) {
-    try {
-        const empresa = await prisma.empresa.findFirst();
-        return NextResponse.json(empresa)
-    } catch (error) {
-        return NextResponse.json({ error: "Erro ao buscar empresas" });
-    }
+// export async function GETONE(request: Request) {
+//     try {
+//         const empresa = await prisma.empresa.findFirst();
+//         return NextResponse.json(empresa)
+//     } catch (error) {
+//         return NextResponse.json({ error: "Erro ao buscar empresas" });
+//     }
 
-}
+// }
