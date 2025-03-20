@@ -35,7 +35,7 @@ git clone https://github.com/eduardo-gabriel-frainer/DesafioAmbisis_EmpresaLicen
 Em seguida, acesse o diretório do projeto:
 
 ```bash
-cd desafio-ambisis
+cd DesafioAmbisis_EmpresaLicenca
 ```
 
 
