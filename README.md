@@ -95,6 +95,12 @@ Para rodar o projeto localmente, execute o comando:
 npm run dev
 ```
 
+## 7. Endpoint Principal
+
+```bash
+http://localhost:3000/
+```
+
 ## Fotos do Sistema
 
 ![image](https://github.com/user-attachments/assets/07ccde36-fdba-416b-b9b6-8dfcfe303886)
