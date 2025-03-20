@@ -94,3 +94,57 @@ Para rodar o projeto localmente, execute o comando:
 ```bash
 npm run dev
 ```
+
+## Fotos do Sistema
+
+![image](https://github.com/user-attachments/assets/07ccde36-fdba-416b-b9b6-8dfcfe303886)
+<br>
+Organização e Estruturação do Código
+
+![image](https://github.com/user-attachments/assets/4998a9bc-e106-4df2-b275-628bc26a6c10)
+<br>
+Diagrama de Classes
+
+![image](https://github.com/user-attachments/assets/d901d74b-6853-4298-ad09-436ec673c618)
+<br>
+Tela Principal
+
+![image](https://github.com/user-attachments/assets/f523eb59-2400-41de-9d30-3ff631190234)
+<br>
+Tela Saiba Mais
+
+![image](https://github.com/user-attachments/assets/f5a30d6f-3647-4a6b-81a3-3a9fdfe9493f)
+<br>
+Tela Lista de Empresas
+
+![image](https://github.com/user-attachments/assets/60bc83b4-5a19-43d5-83be-5a22cdb58a0c)
+<br>
+Tela Cadastro Empresas, com api para puxar informações pelo CEP e máscaras em todos os campos
+
+![image](https://github.com/user-attachments/assets/8a616f31-5fb8-429d-87a2-9165d569343d)
+<br>
+Tela Cadastro Licenças associando a uma empresa já cadastrada
+
+![image](https://github.com/user-attachments/assets/1598739f-f79a-4e4a-8651-4e1a75e6dc38)
+<br>
+Tela Listar as Licenças associadas a uma empresa
+
+![image](https://github.com/user-attachments/assets/2ca641d9-9b7c-4af4-922d-58c00baca2b2)
+<br>
+Footer com meus sites pessoais
+
+![image](https://github.com/user-attachments/assets/5351e930-eee1-4a33-88f8-5edb60f13aa5)
+<br>
+Para mobile a navbar muda e vira um menu hamburguer
+
+
+
+
+
+
+
+
+
+
+
+
