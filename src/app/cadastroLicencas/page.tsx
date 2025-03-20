@@ -19,21 +19,22 @@ interface Licenca {
 }
 
 export default function Licencas() {
+
     const searchParams = useSearchParams();
     const router = useRouter();
-    const [empresas, setEmpresas] = useState<Empresa[]>([]);
+    const [empresas, setEmpresas] = useState<Empresa[]>([]); //Cria um estado para armazenar a lista de empresas
     const empresaId = searchParams.get("empresaId");
     const id = searchParams.get('id');
+
     const [formData, setFormData] = useState<Licenca>({
         numero: '',
         orgaoAmbiental: '',
         emissao: '',
         validade: '',
-        empresaId: '',  // Use "empresaId" para armazenar o ID da empresa selecionada
+        empresaId: '',
     });
 
-    const [loading, setLoading] = useState(!!id);
-
+    // Carrega Empresa para edição se houver ID
     useEffect(() => {
         if (id) {
             console.log('ID recebido na URL:', id);
@@ -60,16 +61,14 @@ export default function Licencas() {
                     } else {
                         throw new Error('Licença não encontrada.');
                     }
-
-                    setLoading(false);
                 })
                 .catch((error) => {
                     console.error('Erro ao carregar os dados:', error.message);
-                    setLoading(false);
                 });
         }
     }, [id]);
 
+    // Carrega a lista de empresas para o select
     useEffect(() => {
         fetch("/api/crudEmpresa")
             .then((response) => response.json())
@@ -82,7 +81,7 @@ export default function Licencas() {
                     if (empresaSelecionada) {
                         setFormData((prev) => ({
                             ...prev,
-                            empresaId: String(empresaSelecionada.id), // Garante que seja string para o select
+                            empresaId: String(empresaSelecionada.id),
                         }));
                     }
                 }
@@ -100,7 +99,7 @@ export default function Licencas() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Certifica que `empresaId` será enviada como um número
+        // Certifica que empresaId será enviada como um número
         const payload = {
             ...formData,
             empresaId: parseInt(formData.empresaId, 10),
@@ -141,7 +140,7 @@ export default function Licencas() {
                         id="empresa"
                         name="empresaId"
                         className="mt-2 p-2 w-full border border-gray-300 rounded-md text-black"
-                        value={formData.empresaId} // Agora é "empresaId"
+                        value={formData.empresaId}
                         onChange={handleChange}
                         required
                     >
@@ -161,8 +160,10 @@ export default function Licencas() {
                         id="numero"
                         name="numero"
                         className="mt-2 p-2 w-full border border-gray-300 rounded-md"
-                        value={formData.numero} // Agora vincula o valor ao estado
+                        value={formData.numero}
                         onChange={handleChange}
+                        pattern="^\S.*"
+                        title="O campo não pode começar com um espaço."
                         required
                     />
                 </div>
@@ -174,8 +175,10 @@ export default function Licencas() {
                         id="orgaoAmbiental"
                         name="orgaoAmbiental"
                         className="mt-2 p-2 w-full border border-gray-300 rounded-md"
-                        value={formData.orgaoAmbiental} // Agora vincula o valor ao estado
+                        value={formData.orgaoAmbiental}
                         onChange={handleChange}
+                        pattern="^\S.*"
+                        title="O campo não pode começar com um espaço."
                         required
                     />
                 </div>
@@ -187,8 +190,10 @@ export default function Licencas() {
                         id="emissao"
                         name="emissao"
                         className="mt-2 p-2 w-full border border-gray-300 rounded-md"
-                        value={formData.emissao} // Agora vincula o valor ao estado
+                        value={formData.emissao}
                         onChange={handleChange}
+                        pattern="^\S.*"
+                        title="O campo não pode começar com um espaço."
                         required
                     />
                 </div>
@@ -200,8 +205,10 @@ export default function Licencas() {
                         id="validade"
                         name="validade"
                         className="mt-2 p-2 w-full border border-gray-300 rounded-md"
-                        value={formData.validade} // Agora vincula o valor ao estado
+                        value={formData.validade}
                         onChange={handleChange}
+                        pattern="^\S.*"
+                        title="O campo não pode começar com um espaço."
                         required
                     />
                 </div>

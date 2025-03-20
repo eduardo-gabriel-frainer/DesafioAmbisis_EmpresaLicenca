@@ -1,15 +1,12 @@
-// prisma é o manipulador de dados
-import { PrismaClient } from '@prisma/client';
-//Cria respostas HTTP dentro do Next
-import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client'; // Manipulador de dados
+import { NextResponse } from 'next/server'; //Cria respostas HTTP dentro do Next
 
-// instancia do Prisma usado para interagir com as tabelas do banco de dados
 const prisma = new PrismaClient();
 
-// Método para Criar Empresa
+// Método para Criar Empresa, recebe uma request
 export async function POST(request: Request) {
     const { razaoSocial, cnpj, cep, cidade, estado, bairro, complemento } = await request.json();
-    // aguarda o corpo da requisição ser convertido para Json
+    // Converte o corpo da requisição de JSON para um objeto TS
 
     const newEmpresa = await prisma.empresa.create({
         data: {
@@ -33,7 +30,6 @@ export async function GET(request: Request) {
     } catch (error) {
         return NextResponse.json({ error: "Erro ao buscar empresas" });
     }
-
 }
 
 // Método para Deletar as Empresas
@@ -75,14 +71,3 @@ export async function PUT(request: Request) {
 
     return NextResponse.json(empresaAtualizada);
 }
-
-// Método para Listar uma empresa
-// export async function GETONE(request: Request) {
-//     try {
-//         const empresa = await prisma.empresa.findFirst();
-//         return NextResponse.json(empresa)
-//     } catch (error) {
-//         return NextResponse.json({ error: "Erro ao buscar empresas" });
-//     }
-
-// }

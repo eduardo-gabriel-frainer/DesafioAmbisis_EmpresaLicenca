@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import LicencasActions from "./LicencasActions";
 import { FaEdit } from "react-icons/fa";
+import LicencasDelete from "./LicencasDelete";
 
 // Tipos
 type Licenca = {
@@ -22,8 +22,8 @@ interface Empresa {
 async function getData(empresaId: string) {
     try {
         const [licencaRes, empresaRes] = await Promise.all([
-            fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/crudLicenca?empresaId=${empresaId}`, { cache: "no-store" }),
-            fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/crudEmpresa?id=${empresaId}`, { cache: "no-store" }),
+            fetch(`http://localhost:3000/api/crudLicenca?empresaId=${empresaId}`, { cache: "no-store" }),
+            fetch(`http://localhost:3000/api/crudEmpresa?id=${empresaId}`, { cache: "no-store" }),
         ]);
 
         if (!licencaRes.ok || !empresaRes.ok) throw new Error("Erro ao buscar dados");
@@ -53,7 +53,7 @@ async function getData(empresaId: string) {
 }
 // Página GerirLicencas: recebe o parâmetro dinâmico "empresaId"
 export default async function GerirLicencas({ params }: { params: { empresaId: string } }) {
-    const { empresaId } = await params; // Use await aqui para resolver corretamente os parâmetros
+    const { empresaId } = await params;
 
     if (!empresaId) {
         return notFound(); // Exibe 404 se não houver empresaId
@@ -94,7 +94,7 @@ export default async function GerirLicencas({ params }: { params: { empresaId: s
                                     <td className="px-4 py-2 border-r">{licenca.validade}</td>
                                     <td className="px-4 py-2">
                                         <div className="flex space-x-4 justify-start p-2">
-                                            <LicencasActions id={licenca.id} />
+                                            <LicencasDelete id={licenca.id} />
                                             <Link href={`/cadastroLicencas?id=${licenca.id}`}>
                                                 <button className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
                                                     <FaEdit size={23} />

@@ -5,6 +5,8 @@ import Link from "next/link";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
+    // menuOpen(estado controla o ☰ aberto ou fechado)
+    // setMenuOpen(funcão que altera o valor de menuOpen)
 
     return (
         <header className="bg-green-600 text-white py-4 px-6 shadow-md">
@@ -14,7 +16,7 @@ export default function Header() {
                     Desafio Ambisis
                 </Link>
 
-                {/* Menu para telas médias ou maiores (md) */}
+                {/* Menu para telas médias ou grandes */}
                 <nav className="space-x-6 hidden lg:block">
                     <Link href="/listarEmpresas" className="hover:text-gray-200 pr-3">
                         Listar Empresas
@@ -45,7 +47,7 @@ export default function Header() {
                 </div>
             </div>
 
-            {/* Menu suspenso no mobile em resoluções menores que lg */}
+            {/* Menu suspenso no mobile aberto pelo ☰*/}
             {menuOpen && (
                 <div className="absolute top-16 right-6 bg-green-700 text-white rounded-md shadow-lg p-4 flex flex-col space-y-3 lg:hidden">
                     <Link href="/listarEmpresas" className="hover:text-gray-300" onClick={() => setMenuOpen(false)}>

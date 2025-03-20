@@ -1,4 +1,4 @@
-// EmpresaActions.tsx
+// Hidrata o botão delete no cliente com JS para a funcao onClick funcionar.
 'use client';
 
 import { FaTrash } from "react-icons/fa";
@@ -9,9 +9,9 @@ type EmpresaActionsProps = {
 
 async function handleDelete(id: number) {
     const response = await fetch("/api/crudEmpresa", {
-        method: "DELETE", // Método DELETE
+        method: "DELETE",
         headers: {
-            "Content-Type": "application/json", // Especifica que o conteúdo é JSON
+            "Content-Type": "application/json",
         },
         body: JSON.stringify({ id }), // Envia o id da empresa para ser deletado
     });

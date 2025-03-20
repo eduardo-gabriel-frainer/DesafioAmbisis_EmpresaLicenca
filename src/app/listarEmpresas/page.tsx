@@ -1,7 +1,8 @@
 import Link from "next/link";
-import EmpresaActions from "./EmpresaActions"; // Importa o novo componente
 import { FaEdit } from "react-icons/fa";
+import EmpresaDelete from "./EmpresaDelete";
 
+// Criando o Tipo Empresa
 type Empresa = {
     id: number;
     razaoSocial: string;
@@ -13,6 +14,7 @@ type Empresa = {
     complemento: string;
 };
 
+// Requisição de Empresas
 async function getEmpresas(): Promise<Empresa[]> {
     const response = await fetch("http://localhost:3000/api/crudEmpresa", { cache: "no-store" });
     if (!response.ok) {
@@ -22,7 +24,8 @@ async function getEmpresas(): Promise<Empresa[]> {
 }
 
 export default async function EmpresasPage() {
-    const empresas = await getEmpresas(); // Buscando empresas no servidor
+
+    const empresas = await getEmpresas(); // Chama a funcão getEmpresas
 
     return (
         <div className="flex flex-col items-center min-h-screen bg-gray-100 p-20">
@@ -68,10 +71,10 @@ export default async function EmpresasPage() {
                                                 </button>
                                             </Link>
 
-                                            <EmpresaActions empresaId={empresa.id} />
+                                            <EmpresaDelete empresaId={empresa.id} />
 
                                             <Link href={`/gerirLicencas/${empresa.id}`}>
-                                                <button className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-blue-600 transition">
+                                                <button className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition">
                                                     Licencas
                                                 </button>
                                             </Link>
