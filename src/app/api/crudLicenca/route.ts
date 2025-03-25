@@ -1,4 +1,4 @@
-'use-client'
+
 import { PrismaClient } from '@prisma/client'; // manipulador de dados
 import { NextResponse } from 'next/server'; // Cria respostas HTTP dentro do Next
 
@@ -36,8 +36,8 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
-    const empresaId = searchParams.get('empresaId');
-    const licencaId = searchParams.get('id');
+    const empresaId = searchParams.get('empresaId'); //listar todas as licenças de uma empresa
+    const licencaId = searchParams.get('id'); // edit
 
     try {
         if (licencaId) {

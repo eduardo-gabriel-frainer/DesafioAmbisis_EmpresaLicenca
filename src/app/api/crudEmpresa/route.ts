@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'; // Manipulador de dados
 import { NextResponse } from 'next/server'; //Cria respostas HTTP dentro do Next
 
+//Instância prisma
 const prisma = new PrismaClient();
 
 // Método para Criar Empresa, recebe uma request
@@ -25,7 +26,27 @@ export async function POST(request: Request) {
 // Método para Listar as Empresas
 export async function GET(request: Request) {
     try {
+        const { searchParams } = new URL(request.url)
+        const id = searchParams.get("id")
+
+        // Se houver id pega uma empresa especifica
+        if (id) {
+            const empresa = await prisma.empresa.findUnique({
+                where: { id: parseInt(id) },
+            });
+
+            if (!empresa) {
+                return NextResponse.json({ error: "Empresa não encontrada" }, { status: 404 })
+            }
+
+            // Retorna uma empresa especifica buscada pelo id
+            return NextResponse.json(empresa)
+        }
+
+        // Pega todas as empresas
         const empresas = await prisma.empresa.findMany();
+
+        //retorna todas as empresas
         return NextResponse.json(empresas)
     } catch (error) {
         return NextResponse.json({ error: "Erro ao buscar empresas" });

@@ -18,7 +18,7 @@ interface Empresa {
     razaoSocial: string;
 };
 
-// Função para buscar os dados no servidor
+// Função para buscar os dados no servidor (licenças e dados da empresa)
 async function getData(empresaId: string) {
     try {
         const [licencaRes, empresaRes] = await Promise.all([
@@ -28,16 +28,15 @@ async function getData(empresaId: string) {
 
         if (!licencaRes.ok || !empresaRes.ok) throw new Error("Erro ao buscar dados");
 
+        // Transforma os dados da requisição em objetos
         const licencasData = await licencaRes.json();
+        // Verifica se existem licenças na resposta e, caso contrário, cria uma lista vazia, para poder continuar a aplicação.
         const licencas: Licenca[] = licencasData.licencas ? licencasData.licencas : [];
-        const empresas: Empresa[] = await empresaRes.json();
+        const empresa: Empresa = await empresaRes.json();
 
+        // Filtra apenas as licencas cujo empresaId equivalem a empresa
         const licencasDaEmpresa = licencas.filter(
             licenca => licenca.empresaId === parseInt(empresaId, 10)
-        );
-
-        const empresa = empresas.find(
-            emp => emp.id === parseInt(empresaId, 10)
         );
 
         if (!empresa) {
@@ -51,6 +50,7 @@ async function getData(empresaId: string) {
         return { licencas: [], empresa: null };
     }
 }
+
 // Página GerirLicencas: recebe o parâmetro dinâmico "empresaId"
 export default async function GerirLicencas({ params }: { params: { empresaId: string } }) {
     const { empresaId } = await params;

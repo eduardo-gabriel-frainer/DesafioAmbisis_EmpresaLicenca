@@ -5,8 +5,6 @@ import Link from "next/link";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
-    // menuOpen(estado controla o ☰ aberto ou fechado)
-    // setMenuOpen(funcão que altera o valor de menuOpen)
 
     return (
         <header className="bg-green-600 text-white py-4 px-6 shadow-md">

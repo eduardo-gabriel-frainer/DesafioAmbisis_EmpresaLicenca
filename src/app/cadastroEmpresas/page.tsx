@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useSearchParams } from 'next/navigation'; //acessa parametros URL
@@ -25,7 +24,7 @@ export default function Empresas() {
     // Estado de erros
     const [error, setError] = useState('');
 
-    // Carrega Empresa para edição se houver ID
+    // Carrega Empresa para edição se houver ID, roda após renderização
     useEffect(() => {
         if (id) {
             console.log('ID recebido na URL:', id);
@@ -34,21 +33,15 @@ export default function Empresas() {
                     if (!res.ok) {
                         throw new Error(`Erro na resposta da API: ${res.status}`);
                     }
-                    const data = await res.json();
-                    console.log('Dados recebidos:', data);
 
-                    if (!data || data.length === 0) {
+                    const empresa = await res.json();
+                    console.log('Dados recebidos:', empresa);
+
+                    if (!empresa || empresa.length === 0) {
                         throw new Error('Nenhuma empresa encontrada.');
                     }
 
-                    // Filtra a empresa pelo ID recebido da URL, até que o find se satisfaça com a sua busca.
-                    const empresa = data.find((item: { id: number }) => item.id === parseInt(id));
-
-                    if (empresa) {
-                        setFormData(empresa);  // Preenche os dados da empresa correta
-                    } else {
-                        throw new Error('Empresa não encontrada.');
-                    }
+                    setFormData(empresa);  // Preenche os dados da empresa correta
 
                 })
                 .catch((error) => {

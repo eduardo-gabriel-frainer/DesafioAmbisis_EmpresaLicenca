@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Inicio() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white pb-30"> {/* Ajuste aqui */}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white pb-30">
       <div className="text-center space-y-6 max-w-4xl mx-auto">
         <h1 className="text-5xl font-extrabold text-green-600 mb-4 rounded-md p-4">
           Sejam Bem Vindos

@@ -72,6 +72,7 @@ export default function Licencas() {
     useEffect(() => {
         fetch("/api/crudEmpresa")
             .then((response) => response.json())
+            // atualiza a lista de empresas
             .then((data) => {
                 setEmpresas(data);
 
