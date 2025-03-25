@@ -35,7 +35,7 @@ git clone https://github.com/eduardo-gabriel-frainer/DesafioAmbisis_EmpresaLicen
 Em seguida, acesse o diretório do projeto:
 
 ```bash
-cd desafio-ambisis
+cd DesafioAmbisis_EmpresaLicenca
 ```
 
 
@@ -93,6 +93,12 @@ Para rodar o projeto localmente, execute o comando:
 
 ```bash
 npm run dev
+```
+
+## 7. Endpoint Principal
+
+```bash
+http://localhost:3000/
 ```
 
 ## Fotos do Sistema
